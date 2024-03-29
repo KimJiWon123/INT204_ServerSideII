@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "file",
+      "type": "sit.int204.classicmodelsservice.properties.FileStorageProperties",
+      "sourceType": "sit.int204.classicmodelsservice.properties.FileStorageProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "file.file-service-host-name",
+      "type": "java.lang.String",
+      "sourceType": "sit.int204.classicmodelsservice.properties.FileStorageProperties"
+    },
+    {
+      "name": "file.upload-dir",
+      "type": "java.lang.String",
+      "sourceType": "sit.int204.classicmodelsservice.properties.FileStorageProperties"
+    }
+  ],
+  "hints": []
+}
