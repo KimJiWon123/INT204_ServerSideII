@@ -25,26 +25,34 @@ public class CustomerController {
     @Autowired
     private ListMapper listMapper;
 
-    @GetMapping("")
-    public ResponseEntity<Object> getAllCustomers(
-            @RequestParam(defaultValue = "false") boolean pageable,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int pageSize) {
-        if(pageable) {
-            Page<Customer> customerPage = service.getCustomers(page, pageSize);
-            return ResponseEntity.ok(listMapper.toPageDTO(customerPage,
-                    SimpleCustomerDTO.class));
-        } else {
-            return ResponseEntity.ok(listMapper.mapList(service.getCustomers(),
-                    SimpleCustomerDTO.class));
-        }
-    }
+    // @GetMapping("")
+    // public ResponseEntity<Object> getAllCustomers(
+    //         @RequestParam(defaultValue = "false") boolean pageable,
+    //         @RequestParam(defaultValue = "0") int page,
+    //         @RequestParam(defaultValue = "10") int pageSize) {
+    //     if(pageable) {
+    //         Page<Customer> customerPage = service.getCustomers(page, pageSize);
+    //         return ResponseEntity.ok(listMapper.toPageDTO(customerPage,
+    //                 SimpleCustomerDTO.class));
+    //     } else {
+    //         return ResponseEntity.ok(listMapper.mapList(service.getCustomers(),
+    //                 SimpleCustomerDTO.class));
+    //     }
+    // }
 
     @GetMapping("/{id}/orders")
     public List<Order> getCustomerOrder(@PathVariable Integer id) {
         System.out.println("id = "+ id);
         return service.findByID(id).getOrderList();
     }
+
+    @GetMapping("")
+    public List<Object> getCustomers() {
+        return service.getCustomers().stream()
+                .map(customer -> modelMapper.map(customer, CustomerDTO.class))
+                .collect(Collectors.toList());
+    }
+    
     @GetMapping("/{id}")
     public ResponseEntity<Object> getCustomerById(@PathVariable Integer id) {
         Customer customer = service.findByID(id);
