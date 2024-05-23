@@ -11,11 +11,11 @@ public class SimpleCustomerDTO {
     private String phone;
     private String city;
     private String country;
-
+//    private String salesFirstName;
+//    private String salesLastName;
     @JsonIgnore
     private SimpleEmployeeDTO sales;
-    public String getSalesPerson() {
-        return sales==null?"=" : sales.getFullName()+
-                " - "+ sales.getOfficeCity() + " | " + "JobTitle: " + sales.getJobTitle();
+    public String getSalePerson() {
+        return sales==null? "--" : sales.getName() + " - "+ sales.getOfficeCity();
     }
 }

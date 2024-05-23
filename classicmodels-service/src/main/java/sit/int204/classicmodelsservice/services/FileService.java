@@ -34,15 +34,13 @@ public class FileService {
                     "Could not create the directory where the uploaded files will be stored.", ex);
         }
     }
+
     public String store(MultipartFile file) {
-// Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
-// Check if the file's name contains invalid characters
             if (fileName.contains("..")) {
                 throw new RuntimeException("Sorry! Filename contains invalid path sequence " + fileName);
             }
-// Copy file to the target location (Replacing existing file with the same name)
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return fileName;
@@ -50,6 +48,7 @@ public class FileService {
             throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
+
     public Resource loadFileAsResource(String fileName) {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
@@ -64,4 +63,16 @@ public class FileService {
         }
     }
 
+    public void removeResource(String fileName) {
+        try {
+            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+            } else {
+                throw new RuntimeException("File not found " + fileName);
+            }
+        } catch (IOException ex) {
+            throw new RuntimeException("File operation error: " + fileName, ex);
+        }
+    }
 }

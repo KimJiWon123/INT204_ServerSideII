@@ -7,12 +7,13 @@ import lombok.Data;
 @Data
 public class NewSimpleEmployeeDto {
     @NotEmpty
-    private Integer employeeNumber;
+    private Integer id;
     @JsonIgnore
     private String firstName;
     @JsonIgnore
     private String lastName;
+
     public String getName() {
-        return firstName + ' '+ lastName;
+        return firstName + ' ' + lastName;
     }
 }

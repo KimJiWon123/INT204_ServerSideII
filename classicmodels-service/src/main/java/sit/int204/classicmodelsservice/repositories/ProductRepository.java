@@ -10,14 +10,13 @@ import sit.int204.classicmodelsservice.entities.Product;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, String> {
-    List<Product> findByPriceBetweenAndProductNameContains(Double lower, Double upper, String partOfName);
-    List<Product> findByPriceBetween(Double lower, Double upper);
-    List<Product> findByProductNameContains(String name);
-    List<Product> findByProductLineStartingWith(String line);
-    @Query("select p from Product p where p.price >= :lowerPrice and p.price < :upperPrice and p.productName like :name")
-    List<Product> findByPriceAndName(Double lowerPrice, Double upperPrice, String name);
-
-    List<Product> findByPriceBetweenAndProductNameContains(Double lower, Double upper, String partOfName, Sort sort);
+    List<Product> findByPriceBetweenAndProductNameContains(Double lower, Double upoer, String productName);
+    List<Product> findByPriceBetweenAndProductNameContains(Double lower, Double upoer, String productName, Sort sort);
+    Page<Product> findByPriceBetweenAndProductNameContains(Double lower, Double upoer, String productName, Pageable pageable);
+    List<Product> findByProductNameContains(String productName);
+    List<Product> findByProductLineStartingWith(String productLine);
     Product findFirstByOrderByPriceDesc();
-    Page<Product> findByPriceBetweenAndProductNameContains(Double lower, Double upper, String partOfName, Pageable pageable);
+
+    @Query("select p from Product p where p.productLine like :category")
+    List<Product> getProductByCategory(String category);
 }

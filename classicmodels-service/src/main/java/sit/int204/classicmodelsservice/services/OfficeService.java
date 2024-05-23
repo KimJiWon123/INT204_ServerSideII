@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import sit.int204.classicmodelsservice.entities.Office;
-import sit.int204.classicmodelsservice.models.Count;
 import sit.int204.classicmodelsservice.repositories.OfficeRepository;
 
 import java.util.List;
@@ -17,19 +15,20 @@ public class OfficeService {
     @Autowired
     private OfficeRepository repository;
 
-    public Count getOfficeCount() {
-        return new Count(repository.count());
+    public List<Office> getAllOffice() {
+        return getAllOffice(null);
     }
-    public List<Office> getAllOffice(String[] param) {
-        if(param==null) {
+    public List<Office> getAllOffice(String city) {
+        if(city==null || city.isEmpty()) {
             return repository.findAll();
         } else {
-            return repository.findAllById(List.of(param));
+            return repository.findByCityContains(city);
         }
     }
 
     public Office getOffice(String officeCode) {
-        return repository.findById(officeCode).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Office Id " + officeCode + " DOES NOT EXIST !!!") {
+        return repository.findById(officeCode).orElseThrow(() ->
+                new HttpClientErrorException(HttpStatus.NOT_FOUND, "Office Id " + officeCode + " DOES NOT EXIST !!!") {
         });
     }
 
@@ -55,7 +54,7 @@ public class OfficeService {
         }
         Office existingOffice = repository.findById(officeCode).orElseThrow(
                 () -> new HttpClientErrorException(HttpStatus.NOT_FOUND,
-                        "Office Id " + officeCode + " DOES NOT EXIST !!!"));
+                        "Office Id" + officeCode + "DOES NOT EXIST !!!"));
         return repository.save(office);
     }
 }

@@ -1,6 +1,5 @@
 package sit.int204.classicmodelsservice.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,11 +22,14 @@ public class Customer {
     private String postalCode;
     private String country;
 //    private Integer salesRepEmployeeNumber;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "salesRepEmployeeNumber")
     private Employee salesRepEmployee;
+
     private Double creditLimit;
     @OneToMany(mappedBy = "customerNumber")
     private List<Order> orderList;
+
+    private String password;
+    private String role;
 }
